@@ -1,0 +1,55 @@
+Pull Request Guidelines
+-----------------------
+
+1) Try to include tests for all new features or significant bug fixes.
+
+2) Properly document new public functions and interfaces. 
+
+3) Follow the style conventions of the surrounding code. In most
+   cases, this is standard Perl style.
+
+   Favor returning early from a function or block over nesting. Always.
+
+4) Do not submit whitepsace changes with code changes. The project is 
+   not pedantic about trailing whitespace; if you have an editor that
+   automatically strips trailing whitespace, you may want to turn
+   that feature off.
+
+5) Do not add dependencies, or submit code that cannot be MIT licensed.
+
+6) Please don't submit a pull request for code that isn't merge-ready.
+   If you want to discuss whether or not possible code changes should
+   happen, do it over IRC, or Discord, or e-mail, not by opening up
+   a pull request.
+
+
+Issue Guidelines
+----------------
+
+1) Issues should only be created for things that are definitely bugs.
+   If you want to request a feature, or have a question, do it through 
+   another medium.
+
+2) Once you are quite sure that it is a bug with the library, please 
+   post a complete description of the issue alongside the simplest
+   possible self-contained example showcasing the problem.
+
+
+Code of Conduct
+---------------
+
+It is not the responsibility of the project's authors, contributors, or
+maintainers to act as policemen or babysitters. Code and ideas will be
+reviewed, considered, and dissected, with the sole consideration being
+technical merit and quality. If you are easily offended by someone 
+disagreeing with you, or hurt by having your ideas questioned, this 
+may not be the best project for you.
+
+However, it IS unacceptable to abuse or threathen individuals. If you 
+feel that a person linked to this project has acted in a way that is not
+acceptable, within the scope of the project, DO bring it up to a 
+maintainer.
+
+In short: attacking arguments and code -- however colourfully that may 
+be -- is good, Attacking people for skin colour, sexual orientation, 
+personal hygiene or preference in doughnuts is bad.

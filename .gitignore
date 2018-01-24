@@ -1,0 +1,8 @@
+# Usual suspects
+.DS_Store
+*.tmp
+*.swp
+Thumbs.db
+
+# Perl6
+.precomp/*
