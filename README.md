@@ -9,7 +9,7 @@ Apply and create binary file patches in the IPS format.
 ```perl6
 use Patch::IPS qw<apply>;
 
-Patch::IPS.apply(
+apply(
   patch => '/home/able/baker/cooking.ips',
   target => '/home/kitchen/staff.nes',
   outfile => '/home/kitchen/delicious-cookies.nes'
