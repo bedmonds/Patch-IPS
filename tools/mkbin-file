@@ -1,0 +1,17 @@
+#!/usr/bin/env perl6
+
+sub MAIN(
+	Int $size where 1..Inf,
+	Str :file($path) = 'a.out', 
+	Int :$byte where 0..255 = 0
+) {
+	CATCH {
+		say 'Something mucked up';
+		say $*ERR;
+		exit 1;	
+	}
+
+	spurt $path, Buf.allocate($size, $byte);
+
+	exit 0;
+}
