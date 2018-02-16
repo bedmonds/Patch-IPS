@@ -13,9 +13,7 @@ This provides a simple API to generate a patch by comparing two files,
 and to apply an existing patch to a file.
 
 =end pod
-
 unit module Patch::IPS;
-
 
 use experimental :pack;
 
@@ -48,10 +46,21 @@ class Record does Instruction {
 	}
 }
 
-
+# Extension to the IPS standard, identifying an address from which point
+# a single byte should be repeated n times.
+# 
+# As with standard records, the first three bytes denote the address at
+# which to start the write op, followed by two bytes of 0 -- indicating
+# that the operation should be treated as an RLE.
+#
+# Following this are three bytes, the first two being the number of times
+# to write the third.
 class RLE does Instruction {
+	# 3 bytes, where to start placing the payload.
 	has Address $!offset;
+	# 2 bytes, the number of times to repeat the payload.
 	has uint8 $!length;
+	# A single byte.
 	has Buf $!payload;
 
 	method call(Buf $rom --> Buf) {
@@ -62,7 +71,7 @@ class RLE does Instruction {
 }
 
 
-class PatchFile {
+class PatchFile is export {
 	has Buf $!header;
 	has @!ops;
 	has Buf $!footer;
@@ -70,18 +79,17 @@ class PatchFile {
 	submethod BUILD(Str :$path!) {
 		$path.IO ~~ :r || die("Cannot open file $path for reading");
 
-		with $path.IO {
-			my $fh will leave { .close } = .open;
-			$fh.encoding: Nil;
+		my $data = $path.IO.slurp(True);
 
-			my $data;
-			$data = $fh.slurp;
+		$!header = $data.subbuf(0, 5);
+		$!footer = $data.subbuf(*-3);
 
-			$!header = $data.subbuf(0, 5);
-			$!footer = $data.subbuf(*-3);
+		@!ops = parse-instructions($data.subbuf(5, $data.bytes - 8));
+	}
 
-			@!ops = parse-instructions($data.subbuf(5, $data.bytes - 8));
-		}
+
+	method apply(Buf $target) {
+		
 	}
 
 	method is-valid {
@@ -131,7 +139,7 @@ sub is-ips(Str $patch --> Bool) {
 	my $fh = $patch.IO.open;
 	LEAVE try close $fh;
 
-	return $fh.readchars(5) eq 'PATCH';
+	return $fh.readchars(5) eq ips-header;
 }
 
 
@@ -145,7 +153,8 @@ sub apply(
 	# (optional) Save the patched file to this location
 	Str :$outfile
 ) is export {
-PatchFile.new(path => '/home/artea/src/ffrestored/FF Restored/Settings/RNG - Improved.ips');
+	my PatchFile $file .= new(path => $patch);
+	spurt $outfile || $target, $file.apply($target);
 }
 
 
